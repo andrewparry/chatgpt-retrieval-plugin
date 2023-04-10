@@ -52,13 +52,14 @@ def extract_text_from_file(file: BufferedReader, mimetype: str) -> str:
         print("Created Reader")
         extracted_text = ""
         pgs = len(reader.pages)
+        p = 0
         print("document has ", pgs, " pages")
         #extracted_text = " ".join([page.extract_text() for page in reader.pages])
-        for page_num in range(pgs):
-            page = reader.getPage(page_num)
+        for page in reader.pages:
             text = page.extractText()
             extracted_text += text
-            print("Page ", page_num, " extracted")
+            p += 1
+            print("Page ",p," of ", pgs, " extracted: ", len(text), " characters")
         print("Length Extracted text: ", len(extracted_text))
         #print(extracted_text)
     elif mimetype == "text/plain" or mimetype == "text/markdown":
