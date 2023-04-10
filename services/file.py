@@ -52,7 +52,7 @@ def extract_text_from_file(file: BufferedReader, mimetype: str) -> str:
         print("Created Reader")
         extracted_text = ""
         pgs = len(reader.pages)
-        print("document has ", len(pgs), " pages")
+        print("document has ", pgs, " pages")
         #extracted_text = " ".join([page.extract_text() for page in reader.pages])
         for page_num in range(pgs):
             page = reader.getPage(page_num)
