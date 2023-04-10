@@ -51,7 +51,7 @@ def extract_text_from_file(file: BufferedReader, mimetype: str) -> str:
         reader = PdfReader(file)
         print("Created Reader")
         extracted_text = ""
-        pgs = reader.pages
+        pgs = len(reader.pages)
         print("document has ", len(pgs), " pages")
         #extracted_text = " ".join([page.extract_text() for page in reader.pages])
         for page_num in range(pgs):
