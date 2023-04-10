@@ -50,9 +50,17 @@ def extract_text_from_file(file: BufferedReader, mimetype: str) -> str:
         print("Extracting text from pdf")
         reader = PdfReader(file)
         print("Created Reader")
-        extracted_text = " ".join([page.extract_text() for page in reader.pages])
-        print("Extracted text:")
-        print(extracted_text)
+        extracted_text = ""
+        pgs = reader.numPages
+        print("document has ", len(pgs), " pages")
+        #extracted_text = " ".join([page.extract_text() for page in reader.pages])
+        for page_num in range(pgs):
+            page = reader.getPage(page_num)
+            text = page.extractText()
+            extracted_text += text
+            print("Page ", page_num, " extracted")
+        print("Length Extracted text: ", len(extracted_text))
+        #print(extracted_text)
     elif mimetype == "text/plain" or mimetype == "text/markdown":
         # Read text from plain text file
         extracted_text = file.read().decode("utf-8")
