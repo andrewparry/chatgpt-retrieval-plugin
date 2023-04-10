@@ -56,7 +56,7 @@ def extract_text_from_file(file: BufferedReader, mimetype: str) -> str:
         print("document has ", pgs, " pages")
         #extracted_text = " ".join([page.extract_text() for page in reader.pages])
         for page in reader.pages:
-            text = page.extractText()
+            text = page.extract_text()
             extracted_text += text
             p += 1
             print("Page ",p," of ", pgs, " extracted: ", len(text), " characters")
