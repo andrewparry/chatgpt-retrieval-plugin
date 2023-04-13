@@ -1,5 +1,11 @@
 # This is a version of the main.py file found in ../../../server/main.py for testing the plugin locally.
 # Use the command `poetry run dev` to run this.
+
+# [AP Start]
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores.redis import Redis as RedisVectorStore
+# [AP End]
+
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, Body, UploadFile
@@ -38,6 +44,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# [AP Start] 
+embedding = OpenAIEmbeddings()
+index_name = "products"
+redis_url = "redis://localhost:6379"
+vectorstore =  RedisVectorStore.from_existing_index(embedding, redis_url="redis://localhost:6379", index_name=index_name)
+retriever = vectorstore.as_retriever()
+# [AP End]
 
 @app.route("/.well-known/ai-plugin.json")
 async def get_manifest(request):
@@ -102,9 +115,10 @@ async def upsert(
 @app.post("/query", response_model=QueryResponse)
 async def query_main(request: QueryRequest = Body(...)):
     try:
-        results = await datastore.query(
-            request.queries,
-        )
+        #results = await datastore.query(
+        #    request.queries,
+        #)
+        results = await retriever.get_relevant_documents(request.queries)
         return QueryResponse(results=results)
     except Exception as e:
         print("Error:", e)
