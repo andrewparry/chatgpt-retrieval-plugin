@@ -115,10 +115,18 @@ async def upsert(
 @app.post("/query", response_model=QueryResponse)
 async def query_main(request: QueryRequest = Body(...)):
     try:
-        #results = await datastore.query(
-        #    request.queries,
-        #)
-        results = await retriever.get_relevant_documents(request.queries)
+        r = await datastore.query(
+            request.queries,
+        )
+        print("---------------------")   
+        print(r)    
+        print("---------------------")
+        print(request.queries)
+        q = [query.query for query in request.queries][0]
+        print(q)
+        results = retriever.get_relevant_documents(q)
+        print(results)
+        print("---------------------")
         return QueryResponse(results=results)
     except Exception as e:
         print("Error:", e)
